@@ -1,0 +1,15 @@
+Course Title: Test Course with Links
+Course Link: https://example.com/course
+Course Instructor: Test Instructor
+
+Lesson 1: Introduction to Testing
+Lesson Link: https://example.com/lesson1
+This is the introduction to testing. We will learn about the basics of automated testing and how to write effective test cases.
+
+Lesson 2: Advanced Testing Techniques
+Lesson Link: https://example.com/lesson2
+This lesson covers advanced testing techniques including integration testing, unit testing, and test-driven development.
+
+Lesson 3: Test Automation
+Lesson Link: https://example.com/lesson3
+Here we explore test automation frameworks and tools for continuous integration and deployment.

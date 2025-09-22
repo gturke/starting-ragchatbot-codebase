@@ -35,6 +35,11 @@ app.add_middleware(
 rag_system = RAGSystem(config)
 
 # Pydantic models for request/response
+class SourceLink(BaseModel):
+    """Source with optional lesson link"""
+    text: str
+    link: Optional[str] = None
+
 class QueryRequest(BaseModel):
     """Request model for course queries"""
     query: str
@@ -43,7 +48,7 @@ class QueryRequest(BaseModel):
 class QueryResponse(BaseModel):
     """Response model for course queries"""
     answer: str
-    sources: List[str]
+    sources: List[SourceLink]
     session_id: str
 
 class CourseStats(BaseModel):
@@ -64,10 +69,20 @@ async def query_documents(request: QueryRequest):
         
         # Process query using RAG system
         answer, sources = rag_system.query(request.query, session_id)
-        
+
+        # Convert sources to SourceLink objects
+        source_links = []
+        for source in sources:
+            if isinstance(source, dict):
+                # New structured format with link
+                source_links.append(SourceLink(text=source.get("text", ""), link=source.get("link")))
+            else:
+                # Legacy format - plain string
+                source_links.append(SourceLink(text=str(source), link=None))
+
         return QueryResponse(
             answer=answer,
-            sources=sources,
+            sources=source_links,
             session_id=session_id
         )
     except Exception as e:
